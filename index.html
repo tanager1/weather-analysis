@@ -40,8 +40,8 @@
         
         <div class="section">
             <h2>Lightning Activity</h2>
-            <p class="description">Thunder nearby? This counts lightning strikes by distance (miles) over a year—18946 hit within 10 miles! Wind direction (0.004) hints at storm paths, and a clustering score (5321.01) shows if strikes bunch up hourly (higher means more bursts).</p>
-            <p class="stat">Strikes Within 10 Miles: 18946</p>
+            <p class="description">Thunder nearby? Over the year, we recorded 19949.0 total strikes (daily max), with 10087.0 incremental hourly strikes. 3618.0 hit within 10 miles! Wind direction (0.003) hints at storm paths, and a clustering score (396.43) shows if strikes bunch up hourly (higher means more bursts).</p>
+            <p class="stat">Total Daily Strikes: 19949.0 | Total Hourly Strikes: 10087.0 | Strikes Within 10 Miles: 3618.0</p>
             <div id="lightningPlot" class="plot"></div>
         </div>
         
@@ -77,7 +77,7 @@
         });
 
         // Lightning Plot
-        var lightningData = { labels: ["10-20 mi", "<10 mi", ">20 mi"], values: [27557, 18946, 13216], type: 'pie', textinfo: 'label+percent', marker: { colors: ['#007bff', '#00b4d8', '#90e0ef'] } };
+        var lightningData = { labels: ["<10 mi", "10-20 mi", ">20 mi"], values: [3618.0, 4727.0, 1623.0], type: 'pie', textinfo: 'label+percent', marker: { colors: ['#007bff', '#00b4d8', '#90e0ef'] } };
         Plotly.newPlot('lightningPlot', [lightningData], { title: 'Lightning Strikes by Distance (miles)' });
 
         // Wind Plot
