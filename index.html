@@ -20,84 +20,68 @@
 <body>
     <div class="header">
         <h1>Weather Station Insights</h1>
-        <p>My personal weather station’s take on local climate, from pool temps to lightning strikes</p>
+        <p>My backyard’s weather tale, from pool dips to garage warmth</p>
     </div>
     
     <div class="container">
         <div class="section">
             <h2>Microclimate Dynamics</h2>
-            <p class="description">Ever wonder how my pool and garage compare to the outdoor air? This shows the average temperature difference in Fahrenheit (°F). The pool’s warmer in summer due to sunlight, while the garage stays cozy year-round thanks to insulation. The graph tracks monthly pool differences from May to September—when I use it!</p>
-            <p class="stat">Pool Average Difference: 5.61°F | Garage Average Difference: 23.81°F</p>
+            <p class="description">Picture this: my pool basking in summer sun while my garage stays snug all year. This shows how much warmer they are compared to outside air (in Fahrenheit, °F). The pool averages 5.61°F higher in summer, and the garage 23.81°F year-round. Sunshine adds warmth (e.g., -0.01°F per W/m² to the pool), while wind cools it (e.g., -0.11°F per mph in the garage). The graph tracks these monthly—pool in summer, garage all year!</p>
+            <p class="stat">Pool Avg Difference: 5.61°F | Garage Avg Difference: 23.81°F</p>
+            <p class="stat">Pool Sun Impact: -0.01°F per W/m² | Garage Wind Effect: -0.11°F per mph</p>
             <div id="microclimatePlot" class="plot"></div>
         </div>
         
         <div class="section">
             <h2>Soil Moisture Response</h2>
-            <p class="description">After it rains, how does my garden soil soak it up? ‘Lag’ is how many hours it takes for moisture to hit its peak—think of it as the soil drinking up water. ‘Decay’ is how fast it dries out afterward (in 1/hour). These numbers help me know when to water my plants!</p>
-            <p class="stat">Average Lag Time: 2.17 hours | Drying Rate: 0.001 per hour</p>
+            <p class="description">Rain’s a treat for my garden! ‘Lag’ is how long it takes soil to soak up water after rain starts—about 2.17 hours to peak. Then it dries out at 0.001 per hour. Wind (0.047) and heat (-0.233) affect it too—wind dries faster, heat can speed it up. Sample drying points: 30.0, 22.0, 64.0, 63.0, 40.0.</p>
+            <p class="stat">Avg Lag Time: 2.17 hours | Drying Rate: 0.001 per hour</p>
         </div>
         
         <div class="section">
             <h2>Lightning Activity</h2>
-            <p class="description">Storms can feel close, and this shows how often lightning strikes near my home. The pie chart breaks it down by distance in miles—‘<10 mi’ means really close! It counts strikes over a year, giving a sense of how stormy my area gets.</p>
+            <p class="description">Thunder nearby? This counts lightning strikes by distance (miles) over a year—18946 hit within 10 miles! Wind direction (0.004) hints at storm paths, and a clustering score (5321.01) shows if strikes bunch up hourly (higher means more bursts).</p>
             <p class="stat">Strikes Within 10 Miles: 18946</p>
             <div id="lightningPlot" class="plot"></div>
         </div>
         
         <div class="section">
             <h2>Air Quality (PM2.5)</h2>
-            <p class="description">PM2.5 measures tiny air particles (in micrograms per cubic meter, µg/m³)—lower is better for breathing! I compare rainy vs. dry days to see if rain washes them away. These levels tell me about local air health.</p>
+            <p class="description">PM2.5 is tiny air junk (in µg/m³)—lower means cleaner breathing! Rain drops it to 8.16 from 8.34 on dry days. Over time, it averages 8.28 µg/m³, with a weekly wiggle of N/A µg/m³. Wind cuts it by -0.46 µg/m³ per mph.</p>
             <p class="stat">Rainy Days: 8.16 µg/m³ | Dry Days: 8.34 µg/m³</p>
         </div>
         
         <div class="section">
             <h2>Wind Patterns</h2>
-            <p class="description">Which way does the wind blow around here? The wind rose shows direction (like a compass: 0° is north, 90° east) and speed (in miles per hour, mph). ‘Persistence’ is how long it stays steady before shifting—short times mean gusty days!</p>
-            <p class="stat">Average Steady Time: 0.17 hours</p>
+            <p class="description">Wind’s a wild dance! The rose shows where it blows from (0° is north) and how fast (mph). It sticks around for 0.17 hours before switching. It cools the pool (-0.113) and dries soil (0.047)—negative means stronger wind, lower temps or moisture.</p>
+            <p class="stat">Avg Steady Time: 0.17 hours</p>
             <div id="windPlot" class="plot"></div>
         </div>
         
         <div class="section">
             <h2>Energy Balance</h2>
-            <p class="description">This estimates how much heat energy (in watts, W) my pool gains, mostly from the sun. It’s highest in summer when sunlight’s strong. The graph shows monthly averages—great for understanding pool heating patterns!</p>
-            <p class="stat">Average Pool Heat Gain: 807.46 W</p>
+            <p class="description">Sun heats my pool and garage, measured in watts (W)—like a heater’s power! The pool averages 807.46 W, the garage 306.82 W. Summer peaks show sun’s strength. Does heat predict temp rises? Pool match is 0.057, garage 0.041—positive means more heat, warmer next hour.</p>
+            <p class="stat">Pool Avg Heat Gain: 807.46 W | Garage Avg Heat Gain: 306.82 W</p>
             <div id="energyPlot" class="plot"></div>
         </div>
     </div>
 
     <script>
         // Microclimate Plot
-        var microData = {
-            x: ["5", "6", "7", "8", "9"],
-            y: [4.55, 5.66, 5.74, 4.42, 9.7],
-            type: 'scatter',
-            mode: 'lines+markers',
-            name: 'Pool Temp Difference',
-            line: { color: '#007bff' }
-        };
-        Plotly.newPlot('microclimatePlot', [microData], {
-            title: 'Monthly Pool Temperature Difference',
-            xaxis: { title: 'Month (1=Jan, 12=Dec)', tickmode: 'array', tickvals: [5, 6, 7, 8, 9], ticktext: ['May', 'Jun', 'Jul', 'Aug', 'Sep'] },
+        var poolMicroData = { x: ["5", "6", "7", "8", "9"], y: [4.55, 5.66, 5.74, 4.42, 9.7], type: 'scatter', mode: 'lines+markers', name: 'Pool Difference', line: { color: '#007bff' } };
+        var garageMicroData = { x: ["1", "2", "3", "5", "6", "7", "8", "9", "10", "11", "12"], y: [52.07, 49.61, 29.61, 11.45, 11.45, 8.77, 9.8, 9.75, 13.34, 28.7, 42.77], type: 'scatter', mode: 'lines+markers', name: 'Garage Difference', line: { color: '#00b4d8' } };
+        Plotly.newPlot('microclimatePlot', [poolMicroData, garageMicroData], {
+            title: 'Monthly Temperature Differences',
+            xaxis: { title: 'Month of the Year', tickmode: 'array', tickvals: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], ticktext: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] },
             yaxis: { title: 'Temperature Difference (°F)' }
         });
 
         // Lightning Plot
-        var lightningData = {
-            labels: ["10-20 mi", "<10 mi", ">20 mi"],
-            values: [27557, 18946, 13216],
-            type: 'pie',
-            textinfo: 'label+percent',
-            marker: { colors: ['#007bff', '#00b4d8', '#90e0ef'] }
-        };
+        var lightningData = { labels: ["10-20 mi", "<10 mi", ">20 mi"], values: [27557, 18946, 13216], type: 'pie', textinfo: 'label+percent', marker: { colors: ['#007bff', '#00b4d8', '#90e0ef'] } };
         Plotly.newPlot('lightningPlot', [lightningData], { title: 'Lightning Strikes by Distance (miles)' });
 
         // Wind Plot
-        var windData = {
-            r: [19457.0, 37716.0, 22050.0, 9756.0, 7174.0, 7255.0, 4988.0, 7655.0],
-            theta: [0.0, 45.0, 90.0, 135.0, 180.0, 224.0, 269.0, 314.0],
-            type: 'barpolar',
-            marker: { color: '#007bff' }
-        };
+        var windData = { r: [19457.0, 37716.0, 22050.0, 9756.0, 7174.0, 7255.0, 4988.0, 7655.0], theta: [0.0, 45.0, 90.0, 135.0, 180.0, 224.0, 269.0, 314.0], type: 'barpolar', marker: { color: '#007bff' } };
         Plotly.newPlot('windPlot', [windData], {
             title: 'Wind Direction and Speed',
             polar: {
@@ -107,17 +91,11 @@
         });
 
         // Energy Plot
-        var energyData = {
-            x: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-            y: [309.82, 526.72, 875.9, 1038.9, 1322.61, 1215.92, 1299.54, 1109.28, 1094.52, 638.39, 256.97, 145.37],
-            type: 'scatter',
-            mode: 'lines+markers',
-            name: 'Pool Heat Gain',
-            line: { color: '#007bff' }
-        };
-        Plotly.newPlot('energyPlot', [energyData], {
-            title: 'Monthly Pool Heat Gain',
-            xaxis: { title: 'Month (1=Jan, 12=Dec)', tickmode: 'array', tickvals: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], ticktext: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] },
+        var poolEnergyData = { x: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"], y: [309.82, 526.72, 875.9, 1038.9, 1322.61, 1215.92, 1299.54, 1109.28, 1094.52, 638.39, 256.97, 145.37], type: 'scatter', mode: 'lines+markers', name: 'Pool Heat Gain', line: { color: '#007bff' } };
+        var garageEnergyData = { x: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"], y: [120.9, 202.83, 334.61, 395.69, 499.38, 458.18, 488.96, 417.69, 412.23, 242.21, 101.54, 59.87], type: 'scatter', mode: 'lines+markers', name: 'Garage Heat Gain', line: { color: '#00b4d8' } };
+        Plotly.newPlot('energyPlot', [garageEnergyData, poolEnergyData], {
+            title: 'Monthly Heat Gain',
+            xaxis: { title: 'Month of the Year', tickmode: 'array', tickvals: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], ticktext: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] },
             yaxis: { title: 'Heat Gain (Watts)' }
         });
     </script>
